@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import requests
 import streamlit as st
+import streamlit.components.v1 as components
 from streamlit_autorefresh import st_autorefresh
 
 
@@ -48,6 +49,23 @@ TERRA = "#B96F50"
 GOLD = "#C5A05B"
 TEAL = "#2A8C82"
 WHITE = "#FFFFFF"
+
+# Muted page colours keep the interface calm while making sections easier to recognise.
+PAGE_BACKGROUNDS = {
+    "Home": "#F2E9D8",
+    "One Community Issue": "#F3E8DC",
+    "Research and Evidence": "#EAF0F3",
+    "School Data": "#EAF1E8",
+    "Citizenship Connection": "#E8F0F3",
+    "Computational Thinking Solution": "#EFEDF4",
+    "Technology Solution": "#E9EFF4",
+    "Universal Values": "#EDF1E8",
+    "Action Plan": "#F3ECE2",
+    "Reflection and Conclusion": "#F0EBE5",
+    "Ask the Endek Guide": "#F3EEE5",
+    "Endek Heritage Game": "#E8F0ED",
+    "References": "#EEF0F1",
+}
 
 st.markdown(
     f"""
@@ -381,6 +399,11 @@ sources = [
         "Bali registers Endek and Songket as communal intellectual property",
         "https://dgip.go.id/index.php/artikel/detail-artikel-berita/bali-catatkan-kain-endek-dan-songket-sebagai-kekayaan-intelektual-komunal?kategori=ki-komunal",
     ),
+    (
+        "JDIH Secretariat General of the Indonesian House of Representatives (DPR RI)",
+        "The 1945 Constitution of the Republic of Indonesia (Articles 28I and 32)",
+        "https://jdih.dpr.go.id/index/uu1945",
+    ),
 ]
 
 
@@ -509,6 +532,25 @@ st.sidebar.markdown("---")
 
 page = st.sidebar.radio("Explore the project", pages)
 
+if st.session_state.get("_previous_page") != page:
+    components.html(
+        """<script>
+        const parentWindow = window.parent;
+        parentWindow.scrollTo({top: 0, left: 0, behavior: 'instant'});
+        const mainArea = parentWindow.document.querySelector('[data-testid="stMain"]');
+        if (mainArea) mainArea.scrollTo({top: 0, left: 0, behavior: 'instant'});
+        const appView = parentWindow.document.querySelector('[data-testid="stAppViewContainer"]');
+        if (appView) appView.scrollTo({top: 0, left: 0, behavior: 'instant'});
+        </script>""",
+        height=0,
+    )
+    st.session_state["_previous_page"] = page
+
+st.markdown(
+    f"<style>.stApp {{ background-color: {PAGE_BACKGROUNDS.get(page, CREAM)}; }}</style>",
+    unsafe_allow_html=True,
+)
+
 st.sidebar.markdown("---")
 st.sidebar.caption("Live questionnaire connection")
 st.sidebar.caption(f"Refreshes every {REFRESH_SECONDS} seconds")
@@ -623,12 +665,29 @@ elif page == "Research and Evidence":
     st.subheader("Main findings from published sources")
     st.markdown(
         """
-        - Bali government reporting in 2026 raises concerns about the regeneration of young Endek weavers.
-        - Government initiatives continue to promote Endek and support local small industries.
-        - 2024 research discusses sustainable Endek weaving practices.
-        - Another 2024 study explores contemporary fashion designs using Endek to support local weavers.
+        - **Fact:** In May 2026, the Bali Provincial Government reported concern about fewer young people being interested in becoming Endek weavers.
+        - **Fact:** The Bali Provincial Government has also promoted Endek and local small industries through public initiatives.
+        - **Research finding:** A 2024 study discusses sustainable Endek weaving practices in Jinengdalem, Buleleng.
+        - **Research finding:** Another 2024 study explores contemporary fashion designs using Endek.
         """
     )
+    st.subheader("Facts and opinions are different")
+    st.write(
+        "A fact is a statement that can be checked using evidence. For example, the Bali Provincial Government published information about concerns over the future number of young Endek weavers in 2026. "
+        "An opinion is a personal view. For example, saying that schools should teach more about Endek is a recommendation, not proof that every student wants the same lesson."
+    )
+    st.write(
+        "My questionnaire is another source of evidence, but it only describes the people who answered it. Its results should not be treated as facts about every student in Bali or Indonesia."
+    )
+    st.subheader("Different viewpoints")
+    st.markdown(
+        """
+        - **Weavers and artisans:** Their skills, working conditions, income, and opportunities to pass on knowledge are important when discussing the future of Endek.
+        - **Students and young people:** They may need clear, interesting ways to learn about Endek and understand its cultural meaning. My questionnaire records the views of its respondents, not all young people.
+        - **Schools and the wider community:** They can help introduce cultural heritage through lessons, demonstrations, and reliable information, while respecting the knowledge of artisans.
+        """
+    )
+    st.caption("These are relevant stakeholder perspectives to consider; they are not presented as direct interview quotations from this project.")
     if require_data():
         st.subheader("Questionnaire evidence")
         st.write(
@@ -737,20 +796,211 @@ elif page == "School Data":
 
 elif page == "Citizenship Connection":
     st.title("Citizenship Connection")
-    st.subheader("Bhinneka Tunggal Ika")
+    st.subheader("Indonesia: Unity in Diversity")
     st.write(
-        "Unity in Diversity reminds Indonesians that people can have different "
-        "cultural traditions while belonging to one nation."
+        "Indonesia is an archipelagic country made up of thousands of islands and "
+        "many cultural communities. Bhinneka Tunggal Ika means Unity in Diversity: "
+        "people can maintain different regional traditions while sharing one national identity."
     )
+    st.subheader("Explore Indonesia's Five Major Islands")
+    st.write(
+        "This map focuses on Indonesia only. Select or hover over the island markers "
+        "to see their names, then read the island profiles below. Bali is marked because "
+        "it is the cultural home of Kain Endek."
+    )
+
+    island_points = pd.DataFrame({
+        "Island": ["Sumatra", "Java", "Kalimantan", "Sulawesi", "Papua"],
+        "Latitude": [0.5, -7.3, 0.5, -1.5, -4.0],
+        "Longitude": [101.0, 110.5, 114.0, 121.0, 138.0],
+        "Description": [
+            "Western Indonesia; Barisan Mountains, Lake Toba and important rainforest habitats.",
+            "Indonesia's most populous island, with major cities, volcanoes and historic temples.",
+            "The Indonesian part of Borneo, known for rainforests, rivers and Dayak communities.",
+            "A distinctive K-shaped island with unusual wildlife and diverse cultures.",
+            "Indonesia's part of New Guinea, known for high mountains and rich Indigenous diversity.",
+        ],
+    })
+    bali_point = pd.DataFrame({
+        "Place": ["Bali — Endek heritage"],
+        "Latitude": [-8.40],
+        "Longitude": [115.15],
+        "Description": ["Bali is the cultural home highlighted for Kain Endek in this project."],
+    })
+
+    import plotly.graph_objects as go
+
+    fig = go.Figure()
+    fig.add_trace(go.Choropleth(
+        locations=["IDN"],
+        z=[1],
+        locationmode="ISO-3",
+        colorscale=[[0, "#D7B56D"], [1, "#D7B56D"]],
+        showscale=False,
+        marker_line_color="#765B32",
+        marker_line_width=1.1,
+        name="Indonesia",
+        hovertemplate="Indonesia<extra></extra>",
+    ))
+    fig.add_trace(go.Scattergeo(
+        lon=island_points["Longitude"],
+        lat=island_points["Latitude"],
+        text=island_points["Island"],
+        customdata=island_points[["Description"]],
+        mode="markers+text",
+        textposition=["top center", "bottom center", "top center", "top center", "top center"],
+        marker=dict(size=8, color="#243B50", line=dict(width=1, color="#FFFFFF")),
+        name="Five major islands",
+        hovertemplate="<b>%{text}</b><br>%{customdata[0]}<extra></extra>",
+    ))
+    fig.add_trace(go.Scattergeo(
+        lon=bali_point["Longitude"],
+        lat=bali_point["Latitude"],
+        text=["BALI · ENDEK"],
+        mode="markers+text",
+        textposition="bottom right",
+        marker=dict(size=13, color="#B42318", symbol="star", line=dict(width=1.5, color="#FFFFFF")),
+        name="Endek heritage location",
+        hovertemplate="<b>Bali — Endek heritage</b><br>Traditional Kain Endek is associated with Bali.<extra></extra>",
+    ))
+    fig.update_geos(
+        scope="asia",
+        projection_type="mercator",
+        fitbounds="locations",
+        showland=False,
+        showocean=True,
+        oceancolor="#EAF3F7",
+        showlakes=False,
+        showcountries=False,
+        showcoastlines=False,
+        bgcolor="rgba(0,0,0,0)",
+    )
+    fig.update_layout(
+        height=610,
+        margin=dict(l=0, r=0, t=15, b=0),
+        paper_bgcolor="rgba(0,0,0,0)",
+        legend=dict(orientation="h", yanchor="bottom", y=0.01, xanchor="left", x=0.01),
+        font=dict(color="#243B50"),
+        dragmode="pan",
+    )
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+        config={"scrollZoom": True, "displayModeBar": True, "doubleClick": "reset"},
+    )
+    st.caption(
+        "Map guide: scroll to zoom, drag to pan, and use the map controls to reset the view. "
+        "The map highlights Indonesia rather than displaying a world map. Island markers are "
+        "approximate locations; the map is for learning, not legal boundary measurement."
+    )
+
+    st.markdown("### Island profiles")
+    island_profiles = [
+        (
+            "Java",
+            "Java is Indonesia's most populous island and an important centre of the country's "
+            "political, economic and cultural life. More than half of Indonesia's population "
+            "lives there, including people in major cities such as Jakarta, Surabaya and Bandung. "
+            "A chain of volcanoes runs across the island, including Mount Bromo and Mount Merapi; "
+            "volcanic ash helps create fertile soil in many areas. Java also has important "
+            "historical sites, including Borobudur, a major Buddhist temple, and Prambanan, "
+            "a large Hindu temple complex."
+        ),
+        (
+            "Sumatra",
+            "Sumatra is one of Indonesia's largest islands and lies in the western part of the "
+            "archipelago, with the equator crossing its northern half. The Barisan Mountains "
+            "run along much of its western side, and the island is known for Lake Toba, a vast "
+            "lake formed in a volcanic caldera. Sumatra's tropical forests provide habitats for "
+            "rare wildlife, including Sumatran tigers, elephants, rhinoceroses and orangutans. "
+            "These forests face pressure from land clearing and plantation development, making "
+            "forest protection important for both wildlife and local communities."
+        ),
+        (
+            "Kalimantan (Indonesian Borneo)",
+            "Kalimantan is the Indonesian region of Borneo, the world's third-largest island, "
+            "which is shared by Indonesia, Malaysia and Brunei. Much of the region is covered "
+            "by tropical rainforest and crossed by large rivers, including the Kapuas and "
+            "Mahakam. Kalimantan is home to many Indigenous Dayak communities, whose cultures "
+            "and languages are diverse, as well as important orangutan habitats. The region "
+            "also contains natural resources such as timber and coal. Nusantara, Indonesia's "
+            "planned new capital, is being developed in East Kalimantan."
+        ),
+        (
+            "Sulawesi",
+            "Sulawesi lies east of Kalimantan and has a distinctive shape with several long "
+            "peninsulas that make it look roughly like the letter K. Its long separation from "
+            "other land areas helped create unusual wildlife found nowhere else, including "
+            "the babirusa, anoa and several kinds of tarsier. Sulawesi is also home to many "
+            "different cultural communities. The Toraja people of South Sulawesi are known "
+            "for distinctive funeral ceremonies and traditional houses, while Bunaken "
+            "National Park in North Sulawesi is famous for its coral reefs and marine life."
+        ),
+        (
+            "Papua (Indonesian New Guinea)",
+            "Papua refers to the Indonesian part of New Guinea, the world's second-largest "
+            "island; the eastern part belongs to Papua New Guinea. Indonesia's Papua region "
+            "has dramatic landscapes, from coastal wetlands and tropical forests to the "
+            "Maoke Mountains, where Puncak Jaya rises to nearly 4,900 metres. The region is "
+            "home to many Indigenous peoples and a remarkable range of local languages and "
+            "traditions. Offshore, the Raja Ampat islands are known internationally for their "
+            "rich coral reefs and marine biodiversity."
+        ),
+    ]
+    for island_name, island_description in island_profiles:
+        with st.container(border=True):
+            st.subheader(island_name)
+            st.write(island_description)
+
+    st.caption(
+        "Background references: Statistics Indonesia (BPS), Indonesia Travel, WWF, and "
+        "the Ministry of Foreign Affairs of Indonesia."
+    )
+    st.markdown(
+        "Sources for further reading: "
+        "[BPS — Area and number of islands by province (2025)](https://www.bps.go.id/en/statistics-table/3/VUZwV01tSlpPVlpsWlRKbmMxcFhhSGhEVjFoUFFUMDkjMw%3D%3D/total-area-and-number-of-islands-by-province--2023.html) · "
+        "[Indonesia Travel — Five largest islands](https://www.indonesia.travel/id/id/travel-ideas/adventure/pulau-terbesar-di-indonesia) · "
+        "[WWF — Borneo and Sumatra](https://www.worldwildlife.org/places/borneo-and-sumatra/)"
+    )
+
     st.subheader("The Proclamation")
     st.write(
-        "The Proclamation established Indonesia as an independent nation. "
-        "Learning about regional traditions helps citizens appreciate the diversity within Indonesia."
+        "The Proclamation established Indonesia as an independent nation. Learning about "
+        "regional traditions helps citizens appreciate the diversity within Indonesia."
     )
     st.subheader("Wawasan Nusantara")
     st.write(
         "Wawasan Nusantara views Indonesia as one united archipelagic nation. "
         "Learning about Endek can encourage respect for cultural traditions from other islands too."
+    )
+
+    st.divider()
+    st.subheader("Connection to Pancasila")
+    st.write(
+        "The strongest connection is the third principle of Pancasila, *Persatuan Indonesia* (The Unity of Indonesia). "
+        "Respecting Kain Endek helps us appreciate Bali's cultural identity as part of Indonesia's wider national diversity. "
+        "It also connects to the second principle, *Kemanusiaan yang Adil dan Beradab*, because we should respect the dignity, knowledge, and work of the artisans who make it."
+    )
+
+    st.subheader("Connection to the 1945 Constitution (UUD 1945)")
+    st.write(
+        "Article 32(1) says that the state advances Indonesia's national culture amid world civilisation while guaranteeing the freedom of the community to preserve and develop its cultural values. "
+        "Article 28I(3) states that cultural identities and the rights of traditional communities are respected in line with the development of the times and civilisation. "
+        "These articles show why cultural heritage and the people who maintain it deserve respect."
+    )
+
+    st.subheader("Rights and responsibilities")
+    st.markdown(
+        """
+        - **Rights:** People should be able to learn about Indonesia's cultural heritage. Artisans and cultural communities deserve respect for their identity, knowledge, and traditions.
+        - **Responsibilities:** We should respect cultural practices, check information before sharing it, avoid stereotypes, protect people's privacy, and support responsible efforts to preserve heritage.
+        """
+    )
+
+    st.subheader("Connection to school rules")
+    st.write(
+        "At school, I can apply these ideas by respecting classmates from different cultural backgrounds, listening without making fun of traditions, following rules for respectful behaviour, and using digital information responsibly. "
+        "This helps make the school a safe place where different cultures are valued."
     )
 
 
@@ -995,6 +1245,14 @@ elif page == "Universal Values":
         with st.expander(name):
             st.write(description)
 
+    st.divider()
+    st.subheader("My chosen universal value: Responsibility")
+    st.write(
+        "I chose responsibility because I needed to make sure that the information I shared was accurate and that the people who answered my questionnaire were respected. "
+        "I checked information against sources, kept the questionnaire anonymous and optional, and avoided claiming that my website had already changed people's knowledge or attitudes. "
+        "Responsibility means being careful about the effects of my choices, both online and in the community."
+    )
+
     st.subheader("Five Catholic values")
     catholic_values = {
         "Human dignity": "Every person has worth. I should respect the weavers, students, and community members who contribute to keeping cultural knowledge alive.",
@@ -1174,6 +1432,20 @@ elif page == "Reflection and Conclusion":
         "lets me share it beyond my classroom. Then I made a website to show my research, my data, and my action plan."
     )
 
+    st.divider()
+    st.subheader("How can my solution help others?")
+    st.write(
+        "The animation can introduce Kain Endek in a short and accessible way, while the website brings the issue, research, questionnaire findings, and interactive learning activities together. "
+        "This gives students and other visitors a place to learn more and explore the topic. However, I have not measured whether visitors' knowledge or attitudes changed, so I cannot claim that the project has already solved the issue."
+    )
+
+    st.subheader("How will I continue applying these values?")
+    st.write(
+        "I can continue showing responsibility by checking sources before sharing information, protecting people's privacy, and being honest about what my data can and cannot show. "
+        "I can show respect and appreciation by listening to artisans and learning about their work without making unsupported claims. "
+        "I can also practise unity by respecting traditions from different parts of Indonesia and sharing reliable information with others."
+    )
+
     st.subheader("How I can improve")
     st.write(
         "My data has limits. The respondents were mostly friends and peers, so my "
@@ -1201,28 +1473,36 @@ elif page == "Reflection and Conclusion":
 elif page == "Ask the Endek Guide":
     st.title("Ask the Endek Guide")
     st.write(
-        "Chat one-to-one with the Endek Guide. This version uses a built-in, source-based "
-        "knowledge library and can respond to greetings and a wider range of Endek questions. "
-        "It is not connected to the ChatGPT AI model, so it cannot answer every question like ChatGPT."
+        "Ask questions in everyday language. The Endek Guide is designed to help with "
+        "Kain Endek and Balinese culture first, while also covering general learning topics "
+        "such as Indonesian geography, science, technology and school concepts."
+    )
+    st.info(
+        "This version uses a built-in knowledge library and programmed responses. "
+        "It is not yet connected to a generative AI model, so it cannot answer every "
+        "possible question or browse the internet. It will tell you when a question is outside its knowledge."
     )
 
     def endek_reply(message):
         q = message.lower().strip()
         words = set(re.findall(r"[a-z0-9]+", q))
 
-        # Handle greetings and conversation first.
+        # Friendly conversation.
         if q in {"hi", "hello", "hey", "good morning", "good afternoon", "good evening", "hola"}:
-            return "Hello! 👋 I'm the Endek Guide. I can explain Kain Endek, Balinese textile traditions, or findings from this project. What are you curious about?"
+            return "Hello! 👋 I'm the Endek Guide. You can ask me about Kain Endek, Indonesian culture, geography, science, technology or other learning topics."
         if any(phrase in q for phrase in ["thank you", "thanks", "terima kasih"]):
-            return "You're welcome! 🧵 Feel free to ask another question."
+            return "You're welcome! 🧵 What else would you like to explore?"
+        if any(phrase in q for phrase in ["tell me a joke", "make me laugh", "joke"]):
+            return "Why did the textile pattern get good grades? Because it always had a good weave of ideas! 😄"
         if any(phrase in q for phrase in ["who are you", "your name", "what can you do"]):
-            return "I'm the Endek Guide, a learning assistant for this project. I can explain Kain Endek, discuss the questionnaire and its results, and suggest ways students can support cultural heritage."
+            return "I'm the Endek Guide. I focus on Kain Endek and Balinese heritage, and I can also explain selected general topics such as Indonesian geography, science, technology and school concepts."
 
-        # School-data questions must be recognised before general school/student questions.
-        # Only enter the survey-data branch when the visitor clearly asks about
-        # questionnaire evidence. General questions about school or students should
-        # stay in the cultural-learning branch below.
-        strong_data_terms = {"survey", "questionnaire", "respondents", "statistics", "findings", "average", "percentage"}
+        # Explain survey terminology before interpreting questions about this project's live results.
+        if any(x in q for x in ["what is a survey", "what is survey", "what is a questionnaire", "what does questionnaire mean"]):
+            return "A survey or questionnaire is a set of questions used to collect information from people. Clear wording, privacy and a suitable range of respondents help make the results more useful."
+
+        # Survey questions are handled before broad cultural or school questions.
+        strong_data_terms = {"respondents", "statistics", "findings", "average", "percentage"}
         school_data_request = (
             bool(words & strong_data_terms)
             or any(x in q for x in [
@@ -1231,13 +1511,14 @@ elif page == "Ask the Endek Guide":
                 "what did respondents answer", "what did people answer in the survey",
                 "show me the results", "survey says", "from the survey"
             ])
-            or ("data" in words and bool(words & {"survey", "questionnaire", "responses", "respondents"}))
         )
         if school_data_request:
             if data_error is not None:
-                return ("The questionnaire asks about six areas: prior awareness, seeing or wearing Endek at school events, "
-                        "familiarity, interest, preferred learning method, and whether learning traditional crafts can support unity. "
-                        "The live spreadsheet is unavailable right now, so I won't guess the current numbers.")
+                return (
+                    "The questionnaire asks about prior awareness, seeing or wearing Endek at school events, "
+                    "familiarity, interest, preferred learning methods, and whether learning traditional crafts "
+                    "can support unity. The live spreadsheet is unavailable right now, so I won't guess the numbers."
+                )
             if any(x in q for x in ["familiar", "interest", "average", "score", "rating"]):
                 parts = []
                 if familiarity_mean is not None:
@@ -1249,12 +1530,12 @@ elif page == "Ask the Endek Guide":
             if any(x in q for x in ["method", "learn", "demonstration", "video", "poster"]):
                 return (f"The most selected learning method is a traditional clothing or fabric demonstration: "
                         f"{demonstration_count} out of {method_valid_n} valid answers. "
-                        "This tells me what respondents preferred; it does not prove that everyone would learn best this way.")
+                        "This records what respondents preferred; it does not prove that everyone would learn best this way.")
             if any(x in q for x in ["unity", "respect", "community"]):
                 counts = df["Believes learning supports unity"].value_counts() if "Believes learning supports unity" in df.columns else pd.Series(dtype=int)
                 summary = ", ".join(f"{str(k)}: {int(v)}" for k, v in counts.items())
                 return (f"For the unity question, the live responses are: {summary}. " if summary else
-                        "There are no valid answers recorded for the unity question yet. ") + "This records respondents' opinions, not proof that a learning activity has already increased unity."
+                        "There are no valid answers recorded for the unity question yet. ") + "These are respondents' opinions, not proof that a learning activity has already increased unity."
             if any(x in q for x in ["seen", "worn", "event", "festivit"]):
                 counts = df["Seen or worn at school events"].value_counts() if "Seen or worn at school events" in df.columns else pd.Series(dtype=int)
                 summary = ", ".join(f"{str(k)}: {int(v)}" for k, v in counts.items())
@@ -1266,41 +1547,75 @@ elif page == "Ask the Endek Guide":
                 return (f"For prior awareness of Kain Endek, the responses are: {summary}. " if summary else
                         "There are no valid answers recorded for prior awareness yet.")
             return (f"The live questionnaire currently has {total_responses} responses. It covers awareness, school-event exposure, "
-                    f"familiarity, interest, preferred learning method, and beliefs about unity. Ask me about one of those areas "
-                    "to see its specific result. The sample describes respondents only, not every student.")
+                    "familiarity, interest, preferred learning method, and beliefs about unity. Ask about one area for its specific result. "
+                    "The sample describes respondents only, not every student.")
 
+        # Kain Endek and Balinese heritage remain the assistant's main focus.
         if any(x in q for x in ["what is endek", "what's endek", "define endek", "kain endek", "endek mean"]):
-            return "Kain Endek is a traditional Balinese woven textile. Its patterns are created using an ikat process, where parts of the yarn are tied and dyed before weaving. It is part of Bali's textile heritage."
+            return "Kain Endek is a traditional Balinese woven textile. Its patterns are made using an ikat process, in which sections of yarn are tied and dyed before weaving. It is an important part of Bali's textile heritage."
         if any(x in q for x in ["made", "weav", "ikat", "process", "technique"]):
-            return "In the ikat process used for Endek, sections of yarn are tied so dye does not reach those parts. The yarn is dyed, arranged, and woven to create a pattern. The Asian Art Museum explains that Endek patterns are dyed into the crosswise weft threads, which must be carefully aligned during weaving."
+            return "In the ikat process used for Endek, sections of yarn are tied so dye cannot reach those parts. The yarn is dyed, arranged and woven to create a pattern. For Endek, the pattern is dyed into the crosswise weft threads, which must be carefully aligned during weaving."
         if any(x in q for x in ["pattern", "motif", "design", "symbol", "colour", "color"]):
-            return "Endek designs include geometric, plant, animal, and culturally inspired motifs. Meanings depend on the particular design and its context, so I should not assume every pattern has the same meaning."
+            return "Endek designs can include geometric, plant, animal and culturally inspired motifs. The meaning depends on the particular design and its context, so it would be inaccurate to claim that every pattern has one fixed meaning."
         if any(x in q for x in ["important", "why preserve", "why matter", "heritage", "culture"]):
-            return "Endek matters because it carries textile knowledge, artistic skill, and cultural heritage from Bali. Supporting it means respecting artisans and helping younger generations understand the tradition."
+            return "Endek matters because it carries textile knowledge, artistic skill and cultural heritage from Bali. Supporting it means respecting artisans and helping younger generations understand the tradition."
         if any(x in q for x in ["disappear", "dying", "young weaver", "weaver", "crisis"]):
-            return "It would be inaccurate to say Endek has disappeared. However, the Bali Provincial Government has reported concern about the future regeneration of young Endek weavers. Passing on weaving knowledge and supporting artisans therefore matters."
-        if any(x in q for x in ["student", "school", "help", "support", "preserve"]):
-            return "Students can learn from reliable sources and local artisans, appreciate Endek respectfully, share accurate information, and take part in school activities. A demonstration can also help people see the skill involved in weaving."
+            return "It would be inaccurate to say Endek has disappeared. However, the Bali Provincial Government has raised concern about the future regeneration of young Endek weavers. Passing on weaving knowledge and supporting artisans therefore matters."
         if any(x in q for x in ["unity", "together", "bhinneka", "diversity"]):
             return "Learning about traditional crafts can help people respect different cultural traditions. This connects with Bhinneka Tunggal Ika: unity while recognising Indonesia's diversity."
+        if any(x in q for x in ["student", "school", "help", "support", "preserve"]):
+            return "Students can learn from reliable sources and local artisans, appreciate Endek respectfully, share accurate information and take part in school activities. They can also explain why traditional weaving skills deserve recognition."
+
+        # Selected general-knowledge topics.
+        if any(x in q for x in ["indonesia", "indonesian archipelago", "how many islands"]):
+            return "Indonesia is an archipelagic country in Southeast Asia, between the Indian and Pacific Oceans. It has thousands of islands and many cultural and language communities. Its five major islands commonly highlighted are Sumatra, Java, Kalimantan, Sulawesi and Papua."
+        if "java" in words and any(x in q for x in ["island", "where", "population", "tell me about"]):
+            return "Java is Indonesia's most populous island and a major centre of government, business and culture. It includes Jakarta, Surabaya and Bandung, as well as volcanoes such as Mount Bromo and historic sites such as Borobudur and Prambanan."
+        if "sumatra" in words:
+            return "Sumatra is a large island in western Indonesia. It has the Barisan mountain range, Lake Toba and important tropical forests that support wildlife such as orangutans, elephants, rhinoceroses and tigers."
+        if "kalimantan" in words or "borneo" in words:
+            return "Kalimantan is the Indonesian part of Borneo, an island shared with Malaysia and Brunei. It is known for tropical rainforests, large rivers, Dayak communities and orangutan habitats. Nusantara, Indonesia's planned new capital, is being developed in East Kalimantan."
+        if "sulawesi" in words:
+            return "Sulawesi is an Indonesian island with a distinctive K-like shape. It is known for wildlife such as babirusa and anoa, the Toraja cultural region, and coral reefs around Bunaken National Park."
+        if "papua" in words or "new guinea" in q:
+            return "Papua is the Indonesian part of New Guinea, the world's second-largest island. Its landscapes include tropical forests and the Maoke Mountains, and it is home to many Indigenous communities, languages and traditions."
+        if any(x in q for x in ["volcano", "volcanoes", "why does indonesia have volcanoes"]):
+            return "Indonesia has many volcanoes because it lies where several tectonic plates meet. As plates move and one plate can sink beneath another, magma may rise and form volcanoes. This is part of the Pacific Ring of Fire."
+        if any(x in q for x in ["rainforest", "rain forest", "biodiversity", "endemic"]):
+            return "Tropical rainforests are warm, wet forests with many kinds of plants and animals. Indonesia's forests support high biodiversity, including species found naturally only in particular regions. Protecting habitats helps protect these species and the communities that depend on forests."
+        if any(x in q for x in ["what is a survey", "questionnaire", "survey mean"]):
+            return "A survey is a way to collect information by asking people questions. Good surveys use clear, neutral questions, protect respondents' privacy and avoid claiming that a small sample represents everyone."
+        if any(x in q for x in ["what is python", "python programming", "programming language"]):
+            return "Python is a programming language used to write instructions for computers. It is popular for data analysis, automation, websites and artificial intelligence because its code is often readable for beginners."
+        if any(x in q for x in ["what is streamlit", "streamlit"]):
+            return "Streamlit is a Python tool for creating interactive data apps and websites. In ENDEK EXPLORER, it displays the pages, charts, questionnaire results and interactive activities."
+        if any(x in q for x in ["what is computational thinking", "computational thinking"]):
+            return "Computational thinking is a way to solve problems using four main ideas: decomposition (break a problem into parts), pattern recognition (spot similarities), abstraction (focus on important information) and algorithms (write clear steps)."
+        if any(x in q for x in ["what is ai", "artificial intelligence", "what is artificial intelligence"]):
+            return "Artificial intelligence (AI) is technology that can perform tasks that usually require human-like abilities, such as recognising patterns, understanding language or making predictions. AI systems can make mistakes, so important information should be checked against reliable sources."
         if any(x in q for x in ["source", "reference", "where did", "evidence"]):
-            return "Useful sources in this project include the Bali Provincial Government, the Asian Art Museum, the Journal of Visual Art and Design, and Segara Widya from ISI Denpasar. Open the References page to visit the original sources."
-        return "I can help with Kain Endek, its weaving process and motifs, the challenges facing young weavers, student actions, or the questionnaire. If you mean the school survey, ask about awareness, familiarity, interest, learning methods, school events, or unity."
+            return "Useful sources for this project include Statistics Indonesia (BPS), the Bali Provincial Government, the Asian Art Museum, the Journal of Visual Art and Design, and Segara Widya from ISI Denpasar. Open the References page to visit the project's sources."
+
+        return (
+            "I don't have a reliable built-in answer for that question yet. I can help with Kain Endek, "
+            "Balinese heritage, Indonesian geography, selected science topics, Python, Streamlit and "
+            "computational thinking. Try asking in a different way, or choose a topic from that list."
+        )
 
     if "endek_chat_history" not in st.session_state:
         st.session_state.endek_chat_history = [
-            {"role": "assistant", "content": "Hello! 👋 I'm the Endek Guide. Ask me anything about Kain Endek or this project."}
+            {"role": "assistant", "content": "Hello! 👋 I'm the Endek Guide. Ask me about Kain Endek or a general learning topic."}
         ]
 
     st.subheader("Try asking")
-    st.caption("Choose a suggested question to send it straight to the Endek Guide.")
+    st.caption("Choose a suggested question or type your own below.")
     helper_questions = [
         "What is Kain Endek?",
         "How is Kain Endek made?",
         "Why is Kain Endek important?",
-        "What did the questionnaire find about familiarity?",
-        "Which learning method did respondents prefer?",
-        "How can students help preserve Endek?",
+        "What makes Java important to Indonesia?",
+        "Why does Indonesia have volcanoes?",
+        "What is computational thinking?",
     ]
     helper_cols = st.columns(3)
     for i, question in enumerate(helper_questions):
@@ -1313,7 +1628,7 @@ elif page == "Ask the Endek Guide":
         with st.chat_message(item["role"]):
             st.markdown(item["content"])
 
-    prompt = st.chat_input("Message the Endek Guide...")
+    prompt = st.chat_input("Ask about Endek or another learning topic...")
     if prompt:
         st.session_state.endek_chat_history.append({"role": "user", "content": prompt})
         reply = endek_reply(prompt)
@@ -1322,7 +1637,7 @@ elif page == "Ask the Endek Guide":
 
     if st.button("Clear chat"):
         st.session_state.endek_chat_history = [
-            {"role": "assistant", "content": "Chat cleared! Hello again — what would you like to learn about Kain Endek?"}
+            {"role": "assistant", "content": "Chat cleared! Ask me about Kain Endek or a general learning topic."}
         ]
         st.rerun()
 
@@ -1347,7 +1662,7 @@ elif page == "Endek Heritage Game":
         {"area":"Research", "title":"A suspicious online claim", "story":"A social media post makes a dramatic claim about an Endek motif but gives no source.", "choices":[("Check reliable sources or ask a knowledgeable artisan",3,"You checked the claim before sharing it."),("Share it because it has many likes",0,"Popularity is not proof."),("Repeat it but say you are not sure",1,"A warning helps, but checking before sharing is stronger.")]},
         {"area":"Community", "title":"Plan a school activity", "story":"Your questionnaire suggests a fabric demonstration is a popular learning method.", "choices":[("Ask a teacher about inviting a local artisan",3,"This connects the activity to the survey and practical knowledge."),("Assume every student wants the same activity",1,"The survey is useful, but it does not represent everyone."),("Cancel the activity without asking anyone",0,"You can explore the idea before deciding.")]},
         {"area":"Community", "title":"A student feels left out", "story":"A new student does not know much about Endek and feels nervous joining the activity.", "choices":[("Invite them in and explain the activity without judging",3,"Welcoming others makes cultural learning more inclusive."),("Tell them they should already know it",0,"People have different experiences and knowledge."),("Ignore them and continue",0,"You missed a chance to make the activity welcoming.")]},
-        {"area":"Digital", "title":"Ready to publish", "story":"Your I has finished an educational Endek animation and wants to post it online.", "choices":[("Fact-check it, credit materials, and get required adult permission",3,"Responsible publishing protects accuracy and respects others."),("Use any image found online without credit",0,"Images need appropriate permission and credit."),("Publish first and check later",0,"Errors can spread once something is public.")]},
+        {"area":"Digital", "title":"Ready to publish", "story":"Your team has finished an educational Endek animation and wants to post it online.", "choices":[("Fact-check it, credit materials, and get required adult permission",3,"Responsible publishing protects accuracy and respects others."),("Use any image found online without credit",0,"Images need appropriate permission and credit."),("Publish first and check later",0,"Errors can spread once something is public.")]},
         {"area":"Digital", "title":"A photo needs a caption", "story":"You found a photograph of Endek fabric for the Home page.", "choices":[("Use the original source and add a clear credit",3,"Good attribution helps visitors trace the image."),("Write that your I took the photo",0,"That would misrepresent who created it."),("Leave out the source",0,"Visitors should be able to identify where the image came from.")]},
         {"area":"Impact", "title":"What did the video achieve?", "story":"Your video is published, but you have not measured its viewers or learning impact.", "choices":[("Report that it was published and say impact is not yet measured",3,"You separated a completed action from an unmeasured outcome."),("Claim everyone learned something",0,"You do not have evidence for that claim."),("Make up a viewer number",0,"Never invent data.")]},
         {"area":"Impact", "title":"A small survey sample", "story":"Most questionnaire responses came from people in your school network.", "choices":[("Explain that the findings describe respondents, not all young people in Bali",3,"That is an accurate limitation."),("Claim it represents every young person in Bali",0,"The sample is not broad enough for that conclusion."),("Hide the sample limitation",0,"Limitations should be reported honestly.")]},

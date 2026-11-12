@@ -1,107 +1,115 @@
-# 🧵 ENDEK EXPLORER
-### Discover, Understand, and Appreciate Kain Endek Bali
+# ENDEK EXPLORER 🧵
+### Discover Kain Endek Bali, understand its cultural value, and explore how young people can help preserve living heritage.
 
-## 1. Project Overview
+ENDEK EXPLORER is an educational website created as a Grade 7 community
+project. It focuses on Kain Endek, a traditional Balinese woven
+textile, and the importance of passing cultural knowledge and
+appreciation to younger generations.
 
-ENDEK EXPLORER is an educational website developed to increase awareness, understanding, and appreciation of Kain Endek Bali, a traditional Balinese woven textile.
+The project explores one community concern: the future regeneration of
+Endek weaving and the need to help young people learn about and
+appreciate this cultural heritage. It uses research, a school
+questionnaire, an educational animation, and an interactive website to
+share information and encourage learning.
+Project focus: Cultural awareness and education. The website is a
+learning resource; it does not claim that it has already increased
+students' knowledge or changed their behaviour.
 
-One concern surrounding Kain Endek is the declining interest of younger generations in traditional crafts and the future of Endek weaving. This project explores how technology and digital learning can help introduce this cultural heritage to younger audiences.
+Explore the website
+The website includes these sections:
+- Home --- introduction to the project and why Kain Endek matters.
+- One Community Issue --- explains the community concern about the
+  future of Endek weaving.
+- Research and Evidence --- presents published research and
+  questionnaire findings, distinguishes facts from opinions, and
+  considers different viewpoints.
+- My School's Findings --- displays questionnaire results through
+  charts and an anonymous response table.
+- Citizenship Connection --- explores Indonesian unity and
+  cultural diversity, the Proclamation, Wawasan Nusantara, Pancasila,
+  the 1945 Constitution (UUD 1945), rights, responsibilities, and
+  school rules. It also includes an interactive map of Indonesia's
+  major islands.
+- Computational Thinking Solution --- explains decomposition,
+  pattern recognition, abstraction, and algorithm design, and shows
+  how they were used to plan the project.
+- Technology Solution --- explains how digital tools collect,
+  organise, analyse, and present information.
+- Universal Values --- discusses universal and Catholic values.
+  The project's chosen universal value is Responsibility.
+- Action Plan --- describes the three completed actions:
+  conducting a questionnaire, creating and sharing an educational
+  animation, and building this website.
+- Reflection and Conclusion --- reflects on learning, explains how
+  the solution may help others, and identifies ways to continue
+  applying the values.
+- Ask the Endek Guide --- a programmed, knowledge-based
+  question-and-answer helper for Kain Endek and selected learning
+  topics. It is not a general-purpose AI chatbot.
+- Endek Heritage Game --- an interactive learning game about
+  cultural heritage.
+- References --- lists the sources used for the project.
+Research and questionnaire
+The project uses published sources about Kain Endek and a questionnaire
+completed by a limited group of school respondents.
 
-The website provides educational information, questionnaire results, and interactive activities to encourage visitors to learn more about Kain Endek.
+Questionnaire results describe only the people who responded. They
+should not be treated as representative of every student, the whole
+school, or all young people in Bali. Responses are self-reported, and
+the project identifies limitations in the sample and questions.
 
-## 2. Project Objectives
+The Research and Evidence section separates: - Facts supported by
+sources or recorded questionnaire results; - Opinions that express a
+person's view rather than an established fact; and - Different
+viewpoints that help explain how artisans, students, schools, and
+communities may see the issue.
 
-- Increase awareness and understanding of Kain Endek Bali.
-- Encourage younger generations to appreciate traditional Balinese crafts.
-- Present questionnaire findings through interactive data visualisations.
-- Use technology to make cultural learning more engaging and accessible.
-- Promote respect for Indonesian cultural heritage and diversity.
-
-## 3. Main Features
-
-### 📊 Questionnaire Research Dashboard
-
-Displays findings from an anonymous questionnaire about respondents' awareness, familiarity, interest, and preferred learning methods regarding Kain Endek Bali.
-
-### 📚 Educational Content
-
-Introduces visitors to Kain Endek, its cultural importance, and its role in Balinese heritage.
-
-### 💬 Ask the Endek Guide
-
-A knowledge-based chatbot that answers questions about Kain Endek and helps visitors explore the educational content.
-
-### 🎮 Endek Heritage Game
-
-An interactive learning game where visitors respond to different scenarios and explore ways to appreciate and preserve cultural heritage.
-
-### 🧠 Computational Thinking
-
-Demonstrates how decomposition, pattern recognition, abstraction, and algorithms were applied during the development of the website.
-
-## 4. Technologies Used
-
-| Technology | Purpose |
-|---|---|
-| Python | Main programming language |
-| Streamlit | Website development and interface |
-| Pandas | Data processing and organisation |
-| Plotly | Interactive data visualisations |
-| Google Sheets | Questionnaire response storage |
-| Requests | Retrieving online data |
-
-## 5. Project Data and Research
-
-The questionnaire was conducted to understand respondents' awareness and interest in Kain Endek Bali.
-
-The website retrieves questionnaire responses from Google Sheets and processes the information to present findings through charts and summaries.
-
-The educational content is supported by research from sources including:
-
-- Bali Provincial Government
-- Journal of Visual Art and Design
-- Segara Widya, ISI Denpasar
-- Asian Art Museum
-- Directorate General of Intellectual Property, Indonesia
-
-## 6. How to Run the Application
-
-To run ENDEK EXPLORER locally:
-
-Step 1. Install Python on your computer.
-
-Step 2. Download or clone this repository.
-
-Step 3. Open a terminal in the project folder.
-
-Step 4. Install the required Python packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-Step 5. Launch the Streamlit application:
-
-```bash
-streamlit run "Endek Connect.py"
-```
-
-The application should open in your web browser.
-
-## 7. Project Purpose
-
-ENDEK EXPLORER demonstrates how technology can support cultural education and help younger generations connect with traditional heritage.
-
-Kain Endek is more than just a textile. It represents cultural identity, creativity, and the traditions passed down through generations.
-
-By combining research, data visualisation, educational content, and interactive learning, this project aims to encourage greater appreciation of Balinese cultural heritage.
-
----
-
-Project: ENDEK EXPLORER
-
-Topic: Kain Endek Bali and Cultural Awareness
-
-Developer: Individual Student Project
-
-Repository: Endek-Explorer
+The website presents these viewpoints as perspectives to consider; it
+does not claim that formal interviews were conducted unless explicitly
+stated in the project.
+Technology
+The app is built with:
+- Python --- application logic;
+- Streamlit --- website interface;
+- Pandas --- organising and analysing questionnaire data;
+- Plotly --- interactive charts and map visualisation;
+- Requests --- retrieving published questionnaire data from Google
+  Sheets; and
+- Google Forms and Google Sheets --- collecting and storing
+  questionnaire responses.
+The school-data dashboard retrieves the published sheet data and
+refreshes periodically. The app also includes privacy-conscious
+presentation of questionnaire results, including an anonymous response
+table.
+Run the app locally
+1. Install Python.
+2. Download or clone this repository.
+3. Open a terminal in the project folder.
+4. Install the required packages:
+   pip install -r requirements.txt
+5. Start the Streamlit app:
+   python -m streamlit run "Endek Connect.py"
+The app will open in your browser. If your computer uses the Python
+launcher, you can use py -m streamlit run "Endek Connect.py" instead.
+Project files
+- Endek Connect.py --- main Streamlit application.
+- requirements.txt --- Python packages required to run the app.
+Project limitations
+- The questionnaire sample is small and is not a representative survey
+  of all students or young people in Bali.
+- Questionnaire answers are self-reported.
+- The website and animation provide opportunities to learn, but this
+  project has not measured whether they changed knowledge, attitudes,
+  or behaviour.
+- The Endek Guide uses programmed responses and a limited knowledge
+  base. It may not understand every question or provide an answer to
+  every topic.
+- Information about cultural history and practices should be checked
+  against the sources listed in the References section.
+Purpose
+ENDEK EXPLORER aims to make learning about Kain Endek more accessible to
+students and to encourage respect for Indonesian cultural heritage.
+Preserving culture is a shared responsibility: learning about
+traditions, checking information carefully, respecting the people who
+maintain them, and sharing knowledge accurately can all contribute.
+Created as a Grade 7 community project.
