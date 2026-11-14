@@ -581,6 +581,36 @@ if page == "Home":
         unsafe_allow_html=True,
     )
 
+    st.subheader("🎬 ENDEK EXPLORER TOUR")
+    st.write(
+        "Watch this short guided tour to discover the website, its research, "
+        "interactive features, and the ideas behind the project."
+    )
+    components.html(
+        """
+        <div style="width:100%; max-width:100%;">
+            <div style="position:relative; width:100%; padding-top:56.25%; overflow:hidden; border-radius:14px; background:#17212b;">
+                <iframe
+                    src="https://drive.google.com/file/d/1_9j0tV7S3Tqf2Sg4KcWZg3dFK3XmBT4T/preview"
+                    title="ENDEK EXPLORER TOUR"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen
+                    webkitallowfullscreen
+                    mozallowfullscreen
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+                ></iframe>
+            </div>
+        </div>
+        """,
+        height=560,
+        scrolling=False,
+    )
+    st.caption(
+        "Use the fullscreen control in the video player for a larger viewing experience. "
+        "If the video does not load, check that its Google Drive sharing setting is "
+        "‘Anyone with the link — Viewer’."
+    )
+
     st.image(
         "https://image.idn.media/post/20260928/shutterstock_2635975371-1_bcc40480-b110-4abb-8d95-538681310774.jpg",
         use_container_width=True,
